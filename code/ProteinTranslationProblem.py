@@ -12,22 +12,22 @@ def load_codon_table(handler):
 	return codons
 
 
-def load_codon_table(handler):
-	counts = {}
-	for line in handler:
-		els = line.strip().split()
-		try:
-			counts[els[1]] = counts.setdefault(els[1],0)+1
-		except IndexError:
-			pass
-	return counts
+# def load_codon_table(handler):
+# 	counts = {}
+# 	for line in handler:
+# 		els = line.strip().split()
+# 		try:
+# 			counts[els[1]] = counts.setdefault(els[1],0)+1
+# 		except IndexError:
+# 			pass
+# 	return counts
 
-def count_vars(seq, counts):
-	tcount = 1
-	for base in seq:
-		print counts[base], base
-		tcount = tcount * counts[base]
-	return tcount
+# def count_vars(seq, counts):
+# 	tcount = 1
+# 	for base in seq:
+# 		print counts[base], base
+# 		tcount = tcount * counts[base]
+# 	return tcount
 
 def translate(codons, seq):
 	seqlen = len(seq)
