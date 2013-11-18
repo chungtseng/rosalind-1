@@ -1,5 +1,5 @@
-This repository of rosalind programming tasks
-=====================================
+Rosalind programming tasks
+----------------------------------
 
 *Test*
 **Another one**
