@@ -26,9 +26,20 @@ def get_score(pept,spectrum):
 	return score
 
 
+def cut_pept_list(pept_dict, N_tresh):
+	pept_list = []
+	score_list = sorted(pept_dict.keys(),reverse=True)
+	for score in score_list:
+		pept_list += pept_dict[score]
+		if len(pept_list) > N_tresh:
+			break
+		else:
+			pass
+	return pept_list
+
+
 def extend_pept_list(pept_list, spectrum, N_tresh):
 	pept_dict = {}
-	score_set = set()
 	parent_mass = max(spectrum)
 
 	for pept in pept_list:
@@ -37,19 +48,11 @@ def extend_pept_list(pept_list, spectrum, N_tresh):
 			pept_mass = sum(newpept)
 			if pept_mass <= parent_mass:
 				score = get_score(newpept, spectrum)
-				score_set.add(score)
 				pept_dict.setdefault(score, []).append(newpept)
 			else:
 				pass
-
-	length = len(score_set)
-	print score_set#, pept_dict
-	score_list = list(score_set)[length - N_tresh:length]
-
-	new_pept_list = []
-	for key, val in pept_dict.items():
-		if key in score_list:
-			new_pept_list += val
+	new_pept_list = cut_pept_list(pept_dict, N_tresh)
+	print len(new_pept_list)
 	return new_pept_list
 
 
@@ -77,6 +80,6 @@ def main():
 										# for pept in pepts])
 	# res1 = open("~/")
 
-	# print output
+	print output
 if __name__ == '__main__':
     main()
