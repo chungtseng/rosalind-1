@@ -51,21 +51,36 @@ def extend_pept_list(pept_list, spectrum, N_tresh):
 				pept_dict.setdefault(score, []).append(newpept)
 			else:
 				pass
+	if len(pept_dict) != 0:
+		max_score = max(pept_dict.keys())
+		max_scored_pepts = pept_dict[max_score]
+	else:
+		max_score = 0
+		max_scored_pepts = []
 	new_pept_list = cut_pept_list(pept_dict, N_tresh)
 	print len(new_pept_list)
-	return new_pept_list
+	return new_pept_list, max_score, max_scored_pepts
 
 
 def get_peptides(spectrum, N_tresh):
 	new_pept_list = [[]]
 	i = 0
+	max_score = 0
+	max_scored_pepts = [0]
 	while len(new_pept_list) > 0:
 	# while i < 3:
 		pept_list = new_pept_list
-		new_pept_list = extend_pept_list(pept_list, spectrum, N_tresh)
+		res = extend_pept_list(pept_list, spectrum, N_tresh)
+		new_pept_list, new_max_score, new_max_scored_pepts = res
+		if new_max_score > max_score:
+			max_score = new_max_score
+			max_scored_pepts = new_max_scored_pepts
+		elif new_max_score == max_score:
+			max_scored_pepts += new_max_scored_pepts
 		i += 1
 		# print new_pept_list, len(new_pept_list)
-	return pept_list
+	print max_score, max_scored_pepts, len(max_scored_pepts)
+	return max_scored_pepts
 
 
 def main():
