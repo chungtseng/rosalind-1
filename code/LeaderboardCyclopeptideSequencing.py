@@ -59,6 +59,7 @@ def extend_pept_list(pept_list, spectrum, N_tresh):
 		max_scored_pepts = []
 	new_pept_list = cut_pept_list(pept_dict, N_tresh)
 	print len(new_pept_list)
+	print pept_dict
 	return new_pept_list, max_score, max_scored_pepts
 
 
