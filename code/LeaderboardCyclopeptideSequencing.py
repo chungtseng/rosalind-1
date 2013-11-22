@@ -3,6 +3,7 @@ from itertools import product
 
 f = open("/home/kovarsky/rosalind/code/integer_mass_table.txt")
 acid_masses = list(set([int(line.strip().split()[1]) for line in f]))
+# acid_masses = [i for i in range(57,201)]
 
 def get_theoretical_spectrum(pept):
 	L = len(pept)
@@ -41,7 +42,6 @@ def cut_pept_list(pept_dict, N_tresh):
 def extend_pept_list(pept_list, spectrum, N_tresh):
 	pept_dict = {}
 	parent_mass = max(spectrum)
-
 	for pept in pept_list:
 		for mass in acid_masses:
 			newpept = pept + [mass]
@@ -59,13 +59,11 @@ def extend_pept_list(pept_list, spectrum, N_tresh):
 		max_scored_pepts = []
 	new_pept_list = cut_pept_list(pept_dict, N_tresh)
 	print len(new_pept_list)
-	print pept_dict
 	return new_pept_list, max_score, max_scored_pepts
 
 
 def get_peptides(spectrum, N_tresh):
 	new_pept_list = [[]]
-	i = 0
 	max_score = 0
 	max_scored_pepts = [0]
 	while len(new_pept_list) > 0:
@@ -78,9 +76,8 @@ def get_peptides(spectrum, N_tresh):
 			max_scored_pepts = new_max_scored_pepts
 		elif new_max_score == max_score:
 			max_scored_pepts += new_max_scored_pepts
-		i += 1
 		# print new_pept_list, len(new_pept_list)
-	print max_score, max_scored_pepts, len(max_scored_pepts)
+	# print max_score, max_scored_pepts, len(max_scored_pepts)
 	return max_scored_pepts
 
 
@@ -96,6 +93,6 @@ def main():
 										# for pept in pepts])
 	# res1 = open("~/")
 
-	print output
+	print "Answer:\n%s" % output
 if __name__ == '__main__':
     main()

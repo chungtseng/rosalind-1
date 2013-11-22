@@ -1,7 +1,7 @@
 import sys
 from itertools import product
 from itertools import combinations
-from LeaderboardCyclopeptideSequencing import *
+import LeaderboardCyclopeptideSequencing as LCS
 
 # f = open("/home/kovarsky/rosalind/code/integer_mass_table.txt")
 # acid_masses = list(set([int(line.strip().split()[1]) for line in f]))
@@ -42,15 +42,13 @@ def main():
 	spec_f.close()
 
 	multiplicity = spec_convolution(spectrum)
-	print multiplicity
-	acid_masses = cut_by_score(multiplicity, M_tresh)
-	print acid_masses
-	pepts = get_peptides(spectrum, N_tresh)
-
+	LCS.acid_masses = cut_by_score(multiplicity, M_tresh)
+	pepts = LCS.get_peptides(spectrum, N_tresh)
+	print len(pepts)
 	output = ' '.join('-'.join(str(mass) for mass in pept)
-										for pept in pepts)
+										for pept in pepts[0:24])
 
-	print output
+	print "Answer:\n%s" % output
 
 
 
