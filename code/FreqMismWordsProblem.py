@@ -16,7 +16,7 @@ bases = ["A", "T", "G", "C"]
 
 def get_relatives(sequence, mismnum):
     l = len(sequence)
-    relatives = sets.Set([])
+    relatives = set()
     for positions in itertools.combinations(xrange(l), mismnum):
         for variants in itertools.product(bases, repeat = mismnum):
             relatives.add(replace(sequence, variants, positions))
