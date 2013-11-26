@@ -28,25 +28,25 @@ def get_kmer_profile(kmers):
 
 
 def get_max_probable_kmer(kmers, profile):
-    max_prob = 0
+    max_prob = -1
     consensus = get_consensus(profile)
-    min_dist = len(consensus)
+    # min_dist = len(consensus)
     # print profile
     for kmer in kmers:
         prob = prod(profile[i].get(base, 0) for i, base in enumerate(kmer))
-        dist = hamming_dist(kmer, consensus)
+        # dist = hamming_dist(kmer, consensus)
         # print prob, dist, kmer
-        if prob >= max_prob:
+        if prob > max_prob:
             max_prob_kmer = kmer
             max_prob = prob
-        if dist <= min_dist:
-            min_dist = dist
-            min_dist_kmer = kmer
-
-    if max_prob != 0:
-        res = max_prob_kmer
-    else:
-        res = min_dist_kmer
+        # if dist <= min_dist:
+        #     min_dist = dist
+        #     min_dist_kmer = kmer
+    res = max_prob_kmer
+    # if max_prob != 0:
+    #     res = max_prob_kmer
+    # else:
+        # res = min_dist_kmer
     return res
 
 def get_consensus(profile):
@@ -81,8 +81,8 @@ def greedy_search(kmer_len, seq_num, dna):
     best_kmer_score = kmer_len * seq_num
     # print dna[0]
     for kmer in fetch_kmers(dna[0], kmer_len):
-        # print '------'
-        # print kmer
+        print '------'
+        print kmer
         motifs = []
         motifs.append(kmer)
         for i in range(1, seq_num):
@@ -104,7 +104,9 @@ def main():
         seq_num = int(nums[1])
         dna = [line.strip() for line in f]
         best_motifs = greedy_search(kmer_len, seq_num, dna)
-        print best_motifs
+        print '\nAnswer:'
+        for best_motif in best_motifs:
+            print best_motif
     
 
 if __name__ == '__main__':
