@@ -2,6 +2,7 @@ import sys
 from math import log
 from MedianString import hamming_dist
 import operator
+from random import choice
 
 def fetch_kmers(seq, kmer_len):
     seq_len = len(seq)
@@ -54,23 +55,33 @@ def get_kmer_score(kmers):
     res = sum(hamming_dist(kmer, consensus) for kmer in kmers)
     return res
 
-def greedy_search(kmer_len, seq_num, dna):
-    best_kmer_score = kmer_len * seq_num
-    # print dna[0]
-    for kmer in fetch_kmers(dna[0], kmer_len):
-        print '------'
-        print kmer
+
+def get_random_kmer(seq, kmer_len):
+    kmers = list(fetch_kmers(seq, kmer_len))
+    return choice(kmers)
+
+
+def randomized_search(kmer_len, seq_num, dna):
+    best_motifs = [get_random_kmer(seq, kmer_len) for seq in dna]
+    # print best_motifs
+    best_motif_score = get_kmer_score(best_motifs)
+    profile = get_kmer_profile(best_motifs)
+    # print profile
+    for i in xrange(3):
+        # print i, best_motif_score
         motifs = []
-        motifs.append(kmer)
-        for i in range(1, seq_num):
-            profile = get_kmer_profile(motifs)
-            ith_kmers = fetch_kmers(dna[i], kmer_len)
-            motifs.append(get_max_probable_kmer(ith_kmers, profile))
+        for seq in dna:
+            kmers = fetch_kmers(seq, kmer_len)
+            most_prob_kmer = get_max_probable_kmer(kmers, profile)
+            motifs.append(most_prob_kmer)
         motif_score = get_kmer_score(motifs)
-        if motif_score < best_kmer_score:
-            best_kmer_score = motif_score
+        # print motifs, motif_score
+        if motif_score < best_motif_score:
+            # print motif_score, best_motif_score
+            best_motif_score = motif_score
             best_motifs = motifs
-    return best_motifs
+            profile = get_kmer_profile(motifs)
+    return best_motifs, best_motif_score
 
 
 
@@ -80,7 +91,15 @@ def main():
         kmer_len = int(nums[0])
         seq_num = int(nums[1])
         dna = [line.strip() for line in f]
-        best_motifs = greedy_search(kmer_len, seq_num, dna)
+        best_motif_score = seq_num * kmer_len
+        for i in range(1000):
+            motifs, motif_score = randomized_search(kmer_len, seq_num, dna)
+            print i, best_motif_score
+            if motif_score < best_motif_score:
+                best_motifs = motifs
+                best_motif_score = motif_score
+
+
         print '\nAnswer:'
         for best_motif in best_motifs:
             print best_motif
