@@ -34,8 +34,20 @@ def get_cycle(node_dict, ini_node):
 
         candidates.append(next_node)
         current_node = next_node
-    return cycle
+    return cycle, candidates
 
+def get_eulerian_cycle(node_dict):
+    ini_node = get_max_degree_node(node_dict)
+    while len(node_dict) > 0:
+        cycle, candidates = get_cycle(node_dict, ini_node)
+        
+
+def get_max_degree_node(node_dict):
+    max_degree = 0
+    for node, neighbours in node_dict.items():
+        if len(neighbours) > max_degree:
+            max_degree_node = node
+    return max_degree_node
 
 if __name__ == '__main__':
     main()
