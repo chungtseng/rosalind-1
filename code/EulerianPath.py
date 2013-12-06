@@ -34,31 +34,35 @@ def get_cycle(candidates, cycle, node_dict):
             candidates.remove(current_node)
             return cycle, candidates
 
-def main():
-    node_dict = {}
+def get_eulerian_path(node_dict):
     degree_balance = defaultdict(int)
-    with open(sys.argv[1], "r") as f:
-        for i, line in enumerate(f):
-            out_node_str, in_nodes_str = line.strip().split('->')
-            out_node = int(out_node_str)
-
-            in_nodes = []
-            for node in in_nodes_str.split(','):
-                in_node = int(node)
-                in_nodes.append(in_node)
-                degree_balance[in_node] += 1
-                degree_balance[out_node] -= 1
-            node_dict[out_node] = in_nodes
+    for out_node, in_nodes in node_dict.iteritems():
+        for in_node in in_nodes:
+            degree_balance[in_node] += 1
+            degree_balance[out_node] -= 1
 
     start = [key for key, val in degree_balance.iteritems() if val < 0].pop()
     end = [key for key, val in degree_balance.iteritems() if val > 0].pop()
     print "start: %d, end: %d" % (start, end)
-    node_dict.setdefault(end, []).append(start)
 
+    node_dict.setdefault(end, []).append(start)
     cycle = get_eulerian_cycle(node_dict)
     start_node_ind = cycle.index(start)
     cycle = cycle[start_node_ind:] + cycle[:start_node_ind]
-    #cycle = cycle + cycle[:1]
+
+    return cycle
+
+
+def main():
+    node_dict = {}
+    with open(sys.argv[1], "r") as f:
+        for i, line in enumerate(f):
+            out_node_str, in_nodes_str = line.strip().split('->')
+            out_node = int(out_node_str)
+            in_nodes = [int(node) for node in in_nodes_str.split(",")]
+            node_dict[out_node] = in_nodes
+
+    cycle = get_eulerian_path(node_dict)
     print '->'.join(str(node) for node in cycle)
 
         

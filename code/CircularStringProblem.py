@@ -26,7 +26,7 @@ def get_cycle(candidates, cycle, node_dict):
             next_node = neighbours.pop()
             candidates.append(next_node)
             if not neighbours and current_node:
-                # del neighbours
+                del neighbours
                 candidates.remove(current_node)
             cycle.append(next_node)
             current_node = next_node

@@ -30,6 +30,7 @@ def get_cycle(candidates, cycle, node_dict):
             cycle.append(next_node)
             current_node = next_node
         else:
+            # del neighbours
             candidates.remove(current_node)
             return cycle, candidates
 
