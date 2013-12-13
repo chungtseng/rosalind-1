@@ -33,19 +33,33 @@ def main():
                       (weight_m[i-1,j-1] + mism_penalty, (i-1, j-1))]
         weight_m[i,j], backtracker[(i,j)] = max(directions)
 
-    print weight_m
     state = (n, m)
-    common_str = ''
-    print backtracker
-    while 0 not in state:
-        print state
-        next_state = backtracker[state]
-        # i, j = next_state
-        # if weight_m[state] - weight_m[next_state]:
-        #     common_str = seq1[i] + common_str
+    align_seq1 = ''
+    align_seq2 = ''
+    print int(weight_m[n, m])
+    while state != (0,0):
+        i, j = state
+        if i == 0:
+            next_state = (i, j - 1)
+        elif j == 0:
+            next_state = (i - 1, j)
+        else:
+            next_state = backtracker[state]
+        i_new, j_new = next_state
+
+        if i - i_new:
+            align_seq1 = seq1[i_new] + align_seq1
+        else:
+            align_seq1 = '-' + align_seq1
+        if j - j_new:
+            align_seq2 = seq2[j_new] + align_seq2
+        else:
+            align_seq2 = '-' + align_seq2
+        
         state = next_state
 
-    print common_str
+    print align_seq1
+    print align_seq2
 
 if __name__ == '__main__':
     main()
