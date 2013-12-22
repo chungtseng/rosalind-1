@@ -25,35 +25,42 @@ def main():
                       (0, (0,0))]
         weight_m[i,j], backtracker[(i,j)] = max(directions)
 
-    max_weight = max(weight_m[n,])
-    ind = max([i for i, weight in enumerate(weight_m[n,]) if weight == max_weight])
+    max_weight = max(weight_m[:,m])
+    # print weight_m[:,m]
+    inds = [i for i, weight in enumerate(weight_m[:,m]) if weight == max_weight]
 
-    state = (n, ind)
-    align_long_seq = ''
-    align_short_seq = ''
-    while j != 0:
-        i, j = state
-        if i == 0:
-            next_state = (i, j - 1)
-        elif j == 0:
-            next_state = (i - 1, j)
-        else:
-            next_state = backtracker[state]
-        i_new, j_new = next_state
+    for ind in inds:
+        state = (ind, m)
+        align_long_seq = ''
+        align_short_seq = ''
+        while True:
+            i, j = state
+            if i == 0:
+                next_state = (i, j - 1)
+            elif j == 0:
+                next_state = (i - 1, j)
+            else:
+                next_state = backtracker[state]
+            i_new, j_new = next_state
 
-        if i - i_new:
-            align_long_seq = long_seq[i_new] + align_long_seq
-        else:
-            align_long_seq = '-' + align_long_seq
-        if j - j_new:
-            align_short_seq = short_seq[j_new] + align_short_seq
-        else:
-            align_short_seq = '-' + align_short_seq
-        
-        state = next_state
+            if i - i_new:
+                align_long_seq = long_seq[i_new] + align_long_seq
+            else:
+                align_long_seq = '-' + align_long_seq
+            if j - j_new:
+                align_short_seq = short_seq[j_new] + align_short_seq
+            else:
+                align_short_seq = '-' + align_short_seq
+            
+            if j_new == 0:
+                break
+            else:
+                state = next_state
 
-    print align_long_seq
-    print align_short_seq
+        print int(weight_m[ind,m])
+        print align_long_seq
+        print align_short_seq
+        # print weight_m
 
 if __name__ == '__main__':
     main()
