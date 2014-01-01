@@ -92,6 +92,7 @@ def align(seq1, seq2):
         else:
             align_seq2 = '-' + align_seq2
         state = next_state
+    # print weight_m
     return (align_seq1, align_seq2), int(weight_m[n, m])
 
 def get_mid_node(seq1, seq2):
@@ -99,8 +100,7 @@ def get_mid_node(seq1, seq2):
     left_subseq = seq2[:half]
     right_subseq = seq2[half:]
     left_state = get_state(seq1, left_subseq)
-    right_state = get_state(seq1[::-1], left_subseq[::-1])
-
+    right_state = get_state(seq1[::-1], right_subseq[::-1])
     fin_state = [l + r for l,r in zip(left_state, right_state[::-1])]
     # print fin_state
     return fin_state.index(max(fin_state)), half
