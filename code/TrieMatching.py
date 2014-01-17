@@ -20,6 +20,19 @@ class Trie(object):
                 return False
         return True
 
+
+def match_trie(trie, text):
+    subtrie = trie
+    for i, s in enumerate(text):
+        if s in subtrie.keys():
+            subtrie = subtrie[s]
+            if not subtrie:
+                return True
+        else:
+            return False
+    return False
+
+
 def bypass_trie(trie, root_node = 1):
     node = root_node
     for key, subtrie in trie.items():
@@ -32,10 +45,18 @@ def bypass_trie(trie, root_node = 1):
 def main():
     trie = Trie()
     with open(sys.argv[1], "r") as f:
+        text = f.readline().strip()
         for line in f:
             trie.add(line.strip())
 
-    bypass_trie(trie.trie)
+    poses = []
+    for i in range(len(text)):
+        text = text[1:]
+        if match_trie(trie.trie, text):
+            poses.append(i + 1)
+
+    print ' '.join(str(pos) for pos in poses)
+
 
 
         
