@@ -2,27 +2,6 @@ import sys
 from itertools import izip
 from copy import copy
 
-def get_lcp_array(suff_array, text):
-    lcp_array = []
-    for i in range(len(suff_array)):
-        lcp = 0
-        if i:
-            pos1 = suff_array[i]
-            pos2 = suff_array[i-1]
-            for s1, s2 in izip(text[pos1:],text[pos2:]):
-                if s1 == s2:
-                    lcp += 1
-                else:
-                    break
-        lcp_array.append(lcp)
-    return lcp_array
-
-def get_suff_array(text):
-    suff_array = range(len(text))
-    return sorted(suff_array, key=lambda x: text[x:x+1000])
-    # return sorted(suff_array, cmp=lambda x, y :cmp(text[x:],text[y:]))
-
-
 class Tree():
     """docstring for Branch"""
     def __init__(self, data, parent=None):
