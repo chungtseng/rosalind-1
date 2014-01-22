@@ -3,7 +3,7 @@ from collections import defaultdict
 
 
 
-def get_inverse_vector(seq):
+def get_inverse_dict(seq):
     count = defaultdict(int)
     occurence = []
     for symb in seq:
@@ -16,25 +16,22 @@ def get_inverse_vector(seq):
         count_less[key] = prev
         prev += count[key]
 
-    inverse_vector = []
+    inverse_dict = {}
     for i, symb in enumerate(seq):
         val = count_less[symb] + occurence[i]
-        inverse_vector.append(val)
+        inverse_dict[i] = val
 
-    print count_less
-    print occurence
-    print count
-    print inverse_vector
-    return inverse_vector
+    return inverse_dict
 
 def inverse_bwt(seq):
-    inverse_vector = get_inverse_vector(seq)
+    inverse_dict = get_inverse_dict(seq)
+    sorted_seq = sorted(seq)
     L = len(seq)
-    res = '$'
+    res = ''
     ind = seq.index('$')
     while len(res) < L:
-        ind = inverse_vector[ind]
-        res = seq[ind] + res
+        ind = inverse_dict[ind]
+        res = sorted_seq[ind] + res
     return res
 
 def main():
